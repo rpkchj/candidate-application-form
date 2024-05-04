@@ -41,7 +41,7 @@
     font-size: 0.95rem;
 }
 .job__location{
-    font-size: 0.65rem;
+    font-size: 0.68rem;
     font-weight: 500;
 }
 
@@ -113,4 +113,11 @@
 .referral__btn{
     background: rgb(73, 67, 218) !important;
     color: white !important;
+}
+
+.view__more__dialog{
+    width: 20rem;
+    height: 20rem;
+    overflow-y: auto;
+    padding: 1rem;
 }

@@ -7,6 +7,8 @@ import { clearJobs, storeJobs } from '../../slice/jobSlice'
 import ButtonCommon from '../common/Button/Button'
 import CardCommon from '../common/Card/Card'
 import Loader from '../common/Loader/Loader'
+import { Avatar } from '@mui/material'
+import DialogBox from '../common/DialogBox/DialogBox'
 
 const JobsFeed = () => {
   const dispatch = useDispatch()
@@ -63,6 +65,17 @@ const JobsFeed = () => {
 export default JobsFeed
 
 export const CardContentComponent = ({job}) => {
+  const [openViewMore, setOpenViewMore] = useState(false)
+
+  const FullJobDescription = () => {
+    return (
+      <div className='view__more__dialog'>
+        {job?.jobDetailsFromCompany}
+      </div>
+    )
+  }
+
+
   return (
     <>
       <div>
@@ -78,11 +91,11 @@ export const CardContentComponent = ({job}) => {
       <div>
         {/* about company jd */}
         <div className='short__job__description'>
-          <p className='description__header'>About Company:</p>
+          <p className='description__header'>Job Description:</p>
           {job?.jobDetailsFromCompany}
         </div>
         <div className='view__more__section'>
-          <button className='view__more__btn'>View More</button>
+          <button className='view__more__btn' onClick={() => setOpenViewMore(true)}>View More</button>
         </div>
       </div>
       <div className='experience__section'>
@@ -90,10 +103,11 @@ export const CardContentComponent = ({job}) => {
         <p className='min__exp__req'>{job.minExp ?? "-"} years</p>
       </div>
       <div>
-        <ButtonCommon className={"easy__apply__btn"} text={"Easy Apply"} variant={"contained"}/>
-        <ButtonCommon className={"referral__btn"} text={"Ask For Referral"} variant={"contained"}/>
+        <ButtonCommon className={"easy__apply__btn"} text={"⚡ Easy Apply"} variant={"contained"}/>
+        <ButtonCommon className={"referral__btn"} text={<p style={{display:'flex', flexDirection: 'row', alignItems:'center'}}><Avatar sx={{height:'25px', width: "25px", margin: '0 0.2rem'}} src="/broken-image.jpg"/> Ask For Referral</p>} variant={"contained"}/>
       </div>
       </div>
+      <DialogBox dialogTitle={"Job Description"} dialogContent={<FullJobDescription/>} openDialog={openViewMore} closeDialogMethod={() => setOpenViewMore(false)} />
     </>
   )
 }
