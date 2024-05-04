@@ -1,0 +1,58 @@
+.job__feed{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+
+.job__card{
+    width: 20rem;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px 0px;
+    margin: 0.5rem 0;
+}
+
+.company__header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.company__job__details{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.short__job__description{
+    height: 5rem;
+    overflow: hidden;
+    mask-image: linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255), rgba(255, 255, 255, 0));
+}
+
+.view__more__btn{
+    outline: none;
+    border: none;
+    background: transparent;
+    color: #4943da;
+}
+
+.easy__apply__btn, .referral__btn{
+    width: 100%;
+    border-radius: 10px !important;
+    margin: 0.5rem 0 !important;
+}
+
+.easy__apply__btn{
+    background: rgb(85, 239, 196) !important;
+    color: black !important;
+}
+
+.referral__btn{
+    background: rgb(73, 67, 218) !important;
+    color: white !important;
+}

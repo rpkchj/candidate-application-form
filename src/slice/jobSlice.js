@@ -10,10 +10,13 @@ const jobSlice = createSlice({
     reducers:{
         storeJobs: (state, {payload}) => {
             state.jobs = [...state.jobs, ...payload]
+        },
+        clearJobs: (state) => {
+            state.jobs = []
         }
     }
 })
 
-export const {storeJobs} = jobSlice.actions
+export const {storeJobs, clearJobs} = jobSlice.actions
 
-export default jobSlice
+export default jobSlice.reducer
