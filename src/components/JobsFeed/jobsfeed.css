@@ -39,6 +39,7 @@
 .job__role{
     margin: 0.2rem 0;
     font-size: 0.95rem;
+    text-transform: capitalize;
 }
 .job__location{
     font-size: 0.68rem;

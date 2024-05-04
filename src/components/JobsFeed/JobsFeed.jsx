@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useEffect, useState } from 'react'
 import "./jobsfeed.css"
 import { getJobs } from '../../services/jobService'
