@@ -1,5 +1,6 @@
 import React from 'react'
 import "./filterfields.css"
+import SelectDropdown from '../common/SelectDropdown/SelectDropdown'
 
 const FilterFields = () => {
   const numOfEmployees = ["1-10", "11-20", "21-50", "51-100", "101-200", "201-500", "500+"]
@@ -31,7 +32,9 @@ const FilterFields = () => {
   }
 
   return (
-    <div>FilterFields</div>
+    <div>
+      {/* <SelectDropdown dataset={techStack} label={"Tech Stack"}/> */}
+    </div>
   )
 }
 
