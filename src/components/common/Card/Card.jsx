@@ -6,7 +6,7 @@ const CardCommon = ({cardContent, cardActionsButtons, className}) => {
   return (
     <div>
       <Card className={className}>
-      <CardContent>
+      <CardContent className='card__content'>
        {cardContent}
       </CardContent>
       <CardActions>
