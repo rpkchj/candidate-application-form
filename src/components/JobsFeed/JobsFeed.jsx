@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import "./jobsfeed.css"
 import { getJobs } from '../../services/jobService'
@@ -16,13 +15,12 @@ const JobsFeed = () => {
   const [page, setPage] = useState(0);
   const jobList = useSelector(state => state.jobSlice.jobs)
 
-  console.log("jobList", jobList)
-
+  // function to call API
   const callToGetJobsList = async() => {
     
     setIsLoading(true)
     try {
-      const resp = await getJobs(page)
+      const resp = await getJobs(page) //service function that actually implements the API. Takes in the offset as a parameter as we need to increase it to get more data
       if(resp?.jdList.length > 0){
         dispatch(storeJobs(resp?.jdList))
       }
@@ -33,6 +31,7 @@ const JobsFeed = () => {
     }
   }
 
+  //This is the function that handles the infinite scrolling feature
   const handleScroll = () => {
     if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isLoading) {
       return;
@@ -41,11 +40,13 @@ const JobsFeed = () => {
     callToGetJobsList();
   };
 
+  //this useEffect is for the initial data from API
   useEffect(() => {
-    dispatch(clearJobs())
+    dispatch(clearJobs()) //making sure to clear the state when page refreshes otherwise it will keep appending to old previous data.
     callToGetJobsList()
   },[])
 
+  // This useEffect runs when the user scrolls to the bottom of the page and when the isLoading state is changed. This fires the scroll handling function
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -64,9 +65,11 @@ const JobsFeed = () => {
 
 export default JobsFeed
 
-export const CardContentComponent = ({job}) => {
+//this component represents the details of the single job which gets rendered in the Card Component
+export const CardContentComponent = ({job}) => { 
   const [openViewMore, setOpenViewMore] = useState(false)
 
+  // this mini component is for the dialog box which opens with the full job description
   const FullJobDescription = () => {
     return (
       <div className='view__more__dialog'>
@@ -74,7 +77,6 @@ export const CardContentComponent = ({job}) => {
       </div>
     )
   }
-
 
   return (
     <>
