@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState, useRef } from 'react'
 import "./jobsfeed.css"
 import { getJobs } from '../../services/jobService'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,6 +11,7 @@ import { Avatar } from '@mui/material'
 import DialogBox from '../common/DialogBox/DialogBox'
 
 const JobsFeed = () => {
+  const flag = useRef(false)
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(0);
@@ -23,6 +25,7 @@ const JobsFeed = () => {
       const resp = await getJobs(page) //service function that actually implements the API. Takes in the offset as a parameter as we need to increase it to get more data
       if(resp?.jdList.length > 0){
         dispatch(storeJobs(resp?.jdList))
+        setPage(prevState => prevState + 1) //once API call is successful and we get the data we increment the page state which is responsible for the offset.
       }
     } catch (error) {
       
@@ -36,14 +39,18 @@ const JobsFeed = () => {
     if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isLoading) {
       return;
     }
-    setPage(prevState => prevState + 1)
     callToGetJobsList();
   };
 
   //this useEffect is for the initial data from API
   useEffect(() => {
-    dispatch(clearJobs()) //making sure to clear the state when page refreshes otherwise it will keep appending to old previous data.
-    callToGetJobsList()
+    if(!flag.current){ //this useRef is used to prevent the native behaviour of useEffect, which calls the API twice on mount.
+      dispatch(clearJobs()) //making sure to clear the state when page refreshes otherwise it will keep appending to old previous data.
+      callToGetJobsList()
+      return () => flag.current = true
+    }
+
+    console.log("initial useEffect");
   },[])
 
   // This useEffect runs when the user scrolls to the bottom of the page and when the isLoading state is changed. This fires the scroll handling function
