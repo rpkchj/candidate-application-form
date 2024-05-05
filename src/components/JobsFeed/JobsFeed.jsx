@@ -14,8 +14,10 @@ const JobsFeed = () => {
   const flag = useRef(false)
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState("")
   const [page, setPage] = useState(0);
   const jobList = useSelector(state => state.jobSlice.jobs)
+  const filterTrackerObject = useSelector(state => state.jobSlice.jobFilters)
 
   // function to call API
   const callToGetJobsList = async() => {
@@ -28,7 +30,8 @@ const JobsFeed = () => {
         setPage(prevState => prevState + 1) //once API call is successful and we get the data we increment the page state which is responsible for the offset.
       }
     } catch (error) {
-      
+      console.error(error)
+      setIsError(error?.message)
     }finally{
       setIsLoading(false)
     }
@@ -61,10 +64,38 @@ const JobsFeed = () => {
 
   return (
     <div className='job__feed'>
-     {jobList.map(job => {
+     {jobList.filter( job => {
+      if (Object.keys(filterTrackerObject).length === 0) {
+        return true;
+      }
+      // techStack and numOfEmployees were not there in the API at the time of building the project. Assumed the backend keys to be like this if in future introduced in the API response
+      const comparisonFunctions = {
+        jobRole: (filterValue, jobValue) => filterValue.includes(jobValue.toUpperCase()),
+        techStack: (filterValue, jobValue) => filterValue.includes(jobValue.toUpperCase()),
+        numOfEmployees: (filterValue, jobValue) => filterValue.includes(jobValue),
+        location: (filterValue, jobValue) => filterValue.includes(jobValue.toUpperCase()),
+        minExp: (filterValue, jobValue) => filterValue <= jobValue,
+        minJdSalary: (filterValue, jobValue) => filterValue <= jobValue,
+        companyName: (filterValue, jobValue) => jobValue.toUpperCase().match(filterValue.toUpperCase()),
+    };      
+      // Check if all filter criteria match for this job
+      return Object.entries(filterTrackerObject).every(([key, value]) => {
+          const jobValue = job[key];
+          const filterValue = typeof value === 'string' ? value.toUpperCase() : value; // Convert to uppercase if string
+  
+          const comparisonFunction = comparisonFunctions[key];
+          return comparisonFunction ? comparisonFunction(filterValue, jobValue) : false;
+      });
+
+ 
+     }).map(job => {
       return <CardCommon className={"job__card"} cardContent={<CardContentComponent job={job}/>}/>
-     })}
+     })
+     
+     
+     }
      {isLoading && <Loader/>}
+     {isError && isError}
     </div>
     
   )

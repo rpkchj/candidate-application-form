@@ -26,18 +26,19 @@ const FilterFields = () => {
 
   const getGroupRoleFromDropdown = (e, newVal, key) => {
     //seperate function for roles dropdown due to different data structure
-    dispatch(updateJobFilters({data: newVal.map(val => val.option), key: key}));
+    dispatch(updateJobFilters({data: newVal.map(val => val.option.toUpperCase()), key: key}));
   }
 
   const getFilterFromDropdown = (_, newVal, key) => {
-    dispatch(updateJobFilters({data:newVal ?? "", key:key}));
+    const valToBePassed = typeof newVal === "object" ? newVal && newVal.map(val => val.option.toUpperCase()) : parseInt(newVal)
+    dispatch(updateJobFilters({data: valToBePassed ?? "", key:key}));
   };
 
   const getCompanyName = (e, key) => {
     // making sure to add the filter string only when there is a gap of 500ms between character input
     clearTimeout(timeoutVariable);
     timeoutVariable = setTimeout(() => {
-      dispatch(updateJobFilters({data:e.target.value, key:key}));
+      dispatch(updateJobFilters({data:e.target.value.toUpperCase(), key:key}));
     }, 500);
   };
 
@@ -71,7 +72,7 @@ const FilterFields = () => {
         <SelectDropdown
           className={"filter__fields"}
           dataset={experience}
-          label={"Experience"}
+          label={"Minimum Experience"}
           multiple={false}
           onChange={(_, newVal) => getFilterFromDropdown(_, newVal, "minExp")}
         />
