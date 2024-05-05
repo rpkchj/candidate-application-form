@@ -1,12 +1,12 @@
 import React from "react";
-import "./filterfields.css";
+import { useDispatch } from "react-redux";
+import { jobType, numOfEmployees, roles, techStack } from "../../dataFile";
+import { updateJobFilters } from "../../slice/jobSlice";
+import InputTextField from "../common/InputTextField/InputTextField";
 import SelectDropdown, {
   GroupedSelectDropDown,
 } from "../common/SelectDropdown/SelectDropdown";
-import InputTextField from "../common/InputTextField/InputTextField";
-import { jobType, numOfEmployees, roles, techStack } from "../../dataFile";
-import { useDispatch } from "react-redux";
-import { updateJobFilters } from "../../slice/jobSlice";
+import "./filterfields.css";
 
 const FilterFields = () => {
   let timeoutVariable;
@@ -30,7 +30,7 @@ const FilterFields = () => {
   }
 
   const getFilterFromDropdown = (_, newVal, key) => {
-    const valToBePassed = typeof newVal === "object" ? newVal && newVal.map(val => val.option.toUpperCase()) : parseInt(newVal)
+    const valToBePassed = typeof newVal === "object" ? newVal && newVal.map(val => val.toUpperCase()) : parseInt(newVal)
     dispatch(updateJobFilters({data: valToBePassed ?? "", key:key}));
   };
 
@@ -66,26 +66,26 @@ const FilterFields = () => {
         <SelectDropdown
           className={"filter__fields"}
           dataset={jobType}
-          label={"Remote"}
+          label={"Job Type"}
           onChange={(_, newVal) => getFilterFromDropdown(_, newVal, "location")}
         />
         <SelectDropdown
           className={"filter__fields"}
           dataset={experience}
-          label={"Minimum Experience"}
+          label={"Min. Experience"}
           multiple={false}
           onChange={(_, newVal) => getFilterFromDropdown(_, newVal, "minExp")}
         />
         <SelectDropdown
           className={"filter__fields"}
           dataset={minBasePay}
-          label={"Minimum Base Salary"}
+          label={"Min. Base Pay"}
           multiple={false}
           onChange={(_, newVal) => getFilterFromDropdown(_, newVal, "minJdSalary")}
         />
         <InputTextField
           className={"filter__fields input__field"}
-          label={"Search Company Name"}
+          label={"Search Company"}
           onChange={(e) => getCompanyName(e, "companyName")}
         />
       </div>

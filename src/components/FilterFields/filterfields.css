@@ -13,7 +13,7 @@
     justify-content: flex-start;
     flex-wrap: wrap;
     align-items: center;
-    margin: 1rem;
+    margin: 0.5rem;
 }
 
 
@@ -24,4 +24,8 @@
 
 .input__field{
     margin: 0.5rem !important;
+}
+
+.clear__filter__btn{
+    padding: 0.4rem 0 !important;
 }
